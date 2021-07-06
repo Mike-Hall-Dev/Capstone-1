@@ -1,0 +1,154 @@
+* {
+    padding: 0;
+    margin: 0;
+    color: #000000;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+button {
+    padding: 0;
+    margin: 0;
+}
+
+
+body {
+    background-color: #151320;
+    height: 100vh;
+}
+
+/* Nav Styles */
+
+nav {
+    background: #f2f2f2;
+    padding: 10px, 40px 10px, 70px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+nav ul li.logo{
+    flex: 1;
+
+}
+nav ul li span.logo {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+nav ul div.items{
+    padding: 0 25px;
+    display: inline-flex;
+}
+
+nav ul div.items a{
+    color:black;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 0 12px;
+}
+
+nav ul div.items a:hover{
+    color: cyan;
+}
+
+nav ul .search-bar {
+    height: 40px;
+    width: 240px;
+    display:flex;
+    background: #f2f2f2;
+    border-radius: 5px;
+}
+
+nav ul .search-bar input {
+    height: 100%;
+    width: 200px;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    color: #000;
+    border-radius: 5px 0 0 5px;
+}
+
+li form {
+    display: inline-flex;
+}
+
+li form button {
+    border: none;
+    outline:none;
+}
+
+nav ul .search-bar .search-icon{
+    height: 100%;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #f2f2f2;
+    border: 1px solid #cccccc;
+    border-radius: 0 5px 5px 0;
+}
+
+nav ul .search-bar .search-icon:hover{
+    background: #e6e6e6;
+}
+
+nav ul .search-bar .search-icon span {
+    color: #222222;
+    font-size: 18px;
+}
+
+@media screen and (max-width: 1052px) {
+    nav {
+        padding: 10px 40px 10px 0px;
+    }
+    nav ul li span.logo {
+        display:none;
+    }
+    nav ul img {
+        display: none;
+    }
+    nav ul div.items{
+        flex: 4
+    }
+
+}
+
+/* Movie styles */
+
+.poster-container {
+    background-color: black;
+    height: 500px;
+    width: 50%;
+    } 
+
+#movies-container{
+    width: 90%;
+    background-color:#EBEBEB;
+    padding: none;
+    opacity: 0.75;
+}
+
+.list-movie-title {
+    color:black;
+    font-family: 'Roboto', sans-serif;
+}
+
+.movie-image {
+    width: 100%;
+    object-fit: none;
+    object-position: top;
+    margin: 0;
+}
+.movie-overview {
+    font-size: 1.1rem;
+}

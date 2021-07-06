@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock%}
+
+{% block content%}
+
+{% if favorites_list|length < 1 %}
+<h1>No results</h1>
+{% endif %}
+
+<div id="movies-container" class="container">
+    <div class="row text-center my-5">
+        {% for movie in favorites_list %}
+        <div class="col-lg-3 col-md-6 col-12 mt-3">
+            <a href="/movie/{{movie.movie_id}}">
+                <div class="container">
+                    {% if movie.poster_path == ""%}
+                    <img class="rounded" src="/static/images/default_img.png" alt="">
+                    {% else %}
+                    <img class="rounded" src="https://image.tmdb.org/t/p/w185{{movie.img_url}}" alt="">
+                    {% endif %}
+                    <span class="list-movie-title">{{movie.title}}</span>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+    <form action="/export">
+        <button type=submit class="btn btn-success">Download List</button>
+    </form>
+</div>
+
+{% endblock%}

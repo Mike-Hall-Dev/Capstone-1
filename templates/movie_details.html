@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} {{movie_data.title}} {% endblock%}
+
+{% block content%}
+
+<div class="card m-2">
+    <div class="card-header text-center">
+        <h1>{{movie_data.title}}</h1>
+        {{movie_data.tagline}}
+    </div>
+    <div class="card-body text-left">
+        <div class="d-flex flex-row align-items-top">
+            <div>
+                <img class="rounded" width="250" src='https://image.tmdb.org/t/p/w500{{movie_data.poster_path}}'
+                    alt={`${movie.title} poster`} />
+            </div>
+            <div class="ml-3">
+                <p class="card-text movie-overview">{{movie_data.overview}}</p>
+                <ul>
+                    <li>Genre - {% for genre in movie_data.genres%} {{genre.name}} {% endfor %}</li>
+                    <li>Rating - {{movie_data.vote_average}}</li>
+                    <li>Release Date - {{movie_data.release_date}}</li>
+                    <li>Runtime - {{movie_data.runtime}} Minutes</li>
+                    {% if movie_data.id in favorites_ids %}
+                    <form method="POST" action="/my_list/delete/{{movie_data.id}}">
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                    {% else %}
+                    <form method="POST" action="/my_list/add/{{movie_data.id}}">
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </form>
+                    {% endif%}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

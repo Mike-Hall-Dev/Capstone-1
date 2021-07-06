@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/popper"></script>
+    <script src="https://unpkg.com/bootstrap"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li class="logo"><a class="navbar-brand" href="/">
+                    <img src="/static/images/test_icon.png" alt="logo">
+                    <span class="logo">Cinema Search</span>
+                </a></li>
+            <div class="items">
+                <li><a href="/">Home</a></li>
+                <li><a href="/my_list">My List</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </div>
+            <li class="search-bar">
+                <form action="/search">
+                    <input required type="serach" name="search" placeholder="Search">
+                    <button class="search-icon"><span class="fas fa-search"></span></button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+
+        {% block content %}
+        {% endblock %}
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+            integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
