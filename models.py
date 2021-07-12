@@ -76,7 +76,7 @@ class Movie(db.Model):
     title = db.Column(db.Text, nullable=False)
     tagline = db.Column(db.Text)
     overview = db.Column(db.Text)
-    img_url = db.Column(db.Text, nullable=False)
+    img_url = db.Column(db.Text)
     genres = db.Column(db.Text)
     rating = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.Text, nullable=False)

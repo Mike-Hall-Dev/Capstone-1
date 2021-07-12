@@ -3,28 +3,36 @@
 {% block title %} Top Rated {% endblock%}
 
 {% block content%}
-<div class="container d-flex justify-content-center">
-    <a href="/"><button class="btn btn-primary">Popular</button></a>
-    <a href="/upcoming"><button class="btn btn-primary">Upcoming</button></a>
+<div class="sort-buttons">
+    <a href="/"><button class="btn btn-success">Popular</button></a>
+    <a href="/upcoming"><button class="btn btn-success">Upcoming</button></a>
 </div>
 
-<div id="movies-container" class="container">
-    <div class="row text-center my-5">
-        {% for movie in top_rated_movies %}
-        <div class="col-lg-3 col-md-6 col-12 mt-3">
-            <a class="movie-card" href="/movie/{{movie.id}}">
-                <div class="container">
-                    <img class="rounded" src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}" alt="">
-                    <span class="list-movie-title">{{movie.title}}</span>
-            </a>
-        </div>
+<div class="wrapper-grid">
+    {% for movie in top_rated_movies %}
+    <div class="container">
+        <a href="/movie/{{movie.id}}">
+            {% if movie.poster_path == None%}
+            <img class="rounded" src="/static/images/default_img.png" alt="">
+            {% else %}
+            <img src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}">
+            {% endif %}
+            <h1 class="name">{{movie.title}}</h1>
+        </a>
     </div>
     {% endfor %}
 </div>
 
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
+<!-- Pagination -->
+<nav class="paginate-nav">
+    <ul class="pagination justify-content-center ">
+        {% if page == 1 %}
+        <li class="hidden">
+            {% else %}
+        <li class="page-item">
+            {% endif %}
+            <a class="page-link" href="{{url_for('show_top_rated')}}">First</a>
+        </li>
         {% if page - 1 == 0 %}
         <li class="page-item disabled">
             {% else %}
@@ -34,6 +42,7 @@
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
+        {% if page < 445 %}
         {% for i in range(page,page + 3) %}
         {% if i == page %}
         <li class="page-item active"><a class="page-link" href="/top_rated/{{i}}">{{i}}</a></li>
@@ -41,12 +50,16 @@
         <li class="page-item"><a class="page-link" href="/top_rated/{{i}}">{{i}}</a></li>
         {% endif %}
         {% endfor %}
-
+        {% endif %}
         <li class="page-item">
             <a class="page-link" href="/top_rated/{{page + 1}}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
+        <li class="page-item">
+            <a class="page-link" href="/top_rated/{{total_pages}}">Last</a>
+        </li>
+
     </ul>
 </nav>
 {% endblock%}

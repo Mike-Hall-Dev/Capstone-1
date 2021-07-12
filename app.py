@@ -25,7 +25,6 @@ app.config['SQLALCHEMY_ECHO'] = False
 connect_db(app)
 
 
-
 ###############################################################################
 
 
@@ -107,8 +106,9 @@ def show_home_page(page):
 
         data = response.json()
         popular_movies_list = data['results']
+        total_pages = data['total_pages']
 
-        return render_template('popular_movies.html', popular_movies_list=popular_movies_list, page=page)
+        return render_template('popular_movies.html', popular_movies_list=popular_movies_list, page=page, total_pages=total_pages)
     else:
         return redirect('/signup')
 
@@ -126,8 +126,9 @@ def show_top_rated(page):
 
     data = response.json()
     top_rated_movies = data['results']
+    total_pages = data['total_pages']
 
-    return render_template('top_rated_movies.html', top_rated_movies=top_rated_movies, page=page)
+    return render_template('top_rated_movies.html', top_rated_movies=top_rated_movies, page=page,total_pages=total_pages)
 
 
 @app.route('/upcoming', defaults={'page': 1})
@@ -143,8 +144,9 @@ def show_upcoming(page):
 
     data = response.json()
     upcoming_movies = data['results']
+    total_pages = data['total_pages']
 
-    return render_template('upcoming.html', upcoming_movies=upcoming_movies, page=page)
+    return render_template('upcoming.html', upcoming_movies=upcoming_movies, page=page, total_pages=total_pages)
 
 
 @app.route('/movie/<int:movie_id>')
@@ -154,20 +156,33 @@ def show_movie_details(movie_id):
     params = {'api_key': API_KEY, 'language': 'en-us'}
     response = requests.get(f"{BASE_URL}/movie/{movie_id}", params)
     movie_data = response.json()
+    similar_movies_response = requests.get(
+        f"{BASE_URL}/movie/{movie_id}/similar", params)
+
+    similar_data = similar_movies_response.json()
+    similar_movie_data = similar_data['results']
+
+
     genre_list = [genre['name'] for genre in movie_data['genres']]
     curr_user = User.query.get(g.user.id)
     favorites_ids = [favorite.movie_id for favorite in curr_user.favorites]
+
+    if movie_data["poster_path"] == None:
+        img_url = None
+    else:
+        img_url = f"https://image.tmdb.org/t/p/w185{movie_data['poster_path']}"
 
     movie_exists = Movie.query.filter(Movie.movie_id == movie_id).all()
     if len(movie_exists) == 0:
         movie = Movie(movie_id=movie_data['id'], title=movie_data['title'], tagline=movie_data['tagline'],
                       overview=movie_data[
-            'overview'], img_url=f"https://image.tmdb.org/t/p/w185{movie_data['poster_path']}",
+            'overview'], img_url=img_url,
             genres=genre_list, release_date=movie_data['release_date'],
             rating=movie_data['vote_average'])
         db.session.add(movie)
         db.session.commit()
-    return render_template("movie_details.html", movie_data=movie_data, favorites_ids=favorites_ids)
+
+    return render_template("movie_details.html", movie_data=movie_data, similar_movie_data=similar_movie_data, favorites_ids=favorites_ids)
 
 
 @app.route('/search', methods=["GET", "POST"])
@@ -217,6 +232,23 @@ def delete_from_mylist(movie_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
+
+    user_id = g.user.id
+    favorited_movie = Favorite.query.filter_by(
+        user_id=user_id, movie_id=movie_id).first()
+    db.session.delete(favorited_movie)
+    db.session.commit()
+
+    return redirect(f"/my_list")
+
+
+@app.route('/movie/my_list/delete/<int:movie_id>', methods=["POST"])
+def movie_view_delete_from_mylist(movie_id):
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
     user_id = g.user.id
     favorited_movie = Favorite.query.filter_by(
         user_id=user_id, movie_id=movie_id).first()
