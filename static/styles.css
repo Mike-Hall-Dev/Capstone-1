@@ -209,8 +209,6 @@ img {
 
   right: -50px;
 }
-
-  
 .carouselbox {
     height: 250px;
     width: auto;
@@ -259,4 +257,11 @@ img {
 
 .movie-props{
     list-style-type: none;
+}
+
+.no-results {
+    text-align: center;
+    color: seashell;
+    font-size: 40px;
+    font-weight: bold;
 }
